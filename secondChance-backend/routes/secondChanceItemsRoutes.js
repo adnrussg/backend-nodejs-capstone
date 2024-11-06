@@ -5,6 +5,7 @@ const fs = require('fs');
 const router = express.Router();
 const connectToDatabase = require('../models/db');
 const logger = require('../logger');
+const { error } = require('console');
 
 // Define the upload directory path
 const directoryPath = 'public/images';
@@ -74,7 +75,7 @@ router.get('/:id', async (req, res, next) => {
         const collection = db.collection("secondChanceItems");
         //Step 4: task 3 - insert code here
         const id = req.params.id;
-        const secondChanceItem = await collection.findOne({"id": id});
+        const secondChanceItem = await collection.findOne({id: id});
         //Step 4: task 4 - insert code here
         if(!secondChanceItem){
             return res.status(400).send('Item not found');
@@ -89,10 +90,34 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
     try {
         //Step 5: task 1 - insert code here
+        const db = await connectToDatabase();
         //Step 5: task 2 - insert code here
+        const collection = db.collection("secondChanceItems");
         //Step 5: task 3 - insert code here
+        const id = req.params.id;
+        const secondChanceItem = await collection.findOne({id});
+        if(!secondChanceItem){
+            return res.status(400).json({error: 'Item does not exist'});
+        }
         //Step 5: task 4 - insert code here
+        secondChanceItem.category = req.body.category;
+        secondChanceItem.condition = req.body.condition;
+        secondChanceItem.age_days = req.body.age_days;
+        secondChanceItem.description = req.body.description;
+        secondChanceItem.age_years = Number((secondChanceItem.age_days/365).toFixed(1));
+        secondChanceItem.updatedAt = new Date();
+
+        const updatepreloveItem = await collection.findOneAndUpdate(
+            { id },
+            { $set: secondChanceItem },
+            { returnDocument: 'after' }
+        );
         //Step 5: task 5 - insert code here
+        if(updatepreloveItem) {
+            res.json({"uploaded":"success"});
+        } else {
+            res.json({"uploaded":"failed"});
+        }
     } catch (e) {
         next(e);
     }
