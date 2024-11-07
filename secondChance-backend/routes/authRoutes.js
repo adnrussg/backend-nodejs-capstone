@@ -110,7 +110,7 @@ router.put('/update', async (req, res) => {
             logger.error('User does not exist');
             return res.status(404).json({ error: 'User does not exist' });
         }
-        theUser.firstName = req.body.firstName;
+        theUser.firstName = req.body.name;
         theUser.updatedAt = new Date();
         // Task 6: Update the user credentials in the database
         const updatedUser = await collection.findOneAndUpdate(
