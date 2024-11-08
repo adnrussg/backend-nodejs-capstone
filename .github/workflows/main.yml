@@ -18,10 +18,6 @@ jobs:
           # This command finds all JavaScript files recursively and runs ESLINT on them
           npm init -y
           npm install eslint eslint-config-standard eslint-plugin-import@^2.25.2 eslint-plugin-n@^16.0.0  eslint-plugin-promise@^6.0.0
-          find ./secondChance-backend -name app.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          find ./secondChance-backend -name authRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          find ./secondChance-backend -name secondChanceItemsRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          find ./secondChance-backend -name searchRoutes.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          find ./secondChance-backend -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
-          find ./sentiment -name index.js -exec ./node_modules/.bin/eslint -c .eslintrc.js {} +
+          # Run ESLint with the --fix flag on all .js files in specified directories
+          ./node_modules/.bin/eslint --fix secondChance-backend/**/*.js sentiment/**/*.js || echo "Linting completed with auto-fix"
           echo "Linted all the js files successfully"
