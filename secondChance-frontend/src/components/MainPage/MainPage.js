@@ -59,7 +59,7 @@ function MainPage() {
                         <div className="card product-card">
                             <div className="image-placeholder">
                                 {item.image ? (
-                                    <img src={urlConfig.backendUrl+item.image} alt={item.name} />                                ) : (
+                                    <img src={`${urlConfig.backendUrl}${item.image}`} alt={item.name} />                                ) : (
                                     <div className="no-image-available">No Image Available</div>
                                 )}
                             </div>
